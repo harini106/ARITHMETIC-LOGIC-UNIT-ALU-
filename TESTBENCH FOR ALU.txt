@@ -1,0 +1,55 @@
+TESTBENCH FOR ALU
+
+`timescale 1ns/1ps        // Time unit = 1ns, precision = 1ps
+
+module ALU_TB;
+
+    reg  [3:0] A, B;      // Declare 4-bit input registers A and B
+    reg  [2:0] sel;       // 3-bit select line
+    wire [3:0] Y;         // 4-bit output wire from ALU
+
+    // Instantiate the ALU module (UUT = Unit Under Test)
+    ALU uut (
+        .A(A), 
+        .B(B), 
+        .sel(sel), 
+        .Y(Y)
+    );
+
+    initial begin
+        // ---------------------------
+        // WAVEFORM GENERATION COMMANDS
+        // ---------------------------
+
+        $dumpfile("alu_waveform.vcd");  // Creates waveform output file
+        $dumpvars(0, ALU_TB);           // Dumps all signals in this testbench
+
+        // ---------------------------
+        // APPLYING TEST CASES
+        // ---------------------------
+
+        A = 4'b0101; B = 4'b0011; sel = 3'b000; #10;  // ADD → Y = 1000
+        // Explanation:
+        // A = 5, B = 3, sel=000 → Addition
+        // #10 waits 10 ns before next input
+
+        A = 4'b1000; B = 4'b0010; sel = 3'b001; #10;  // SUB → Y = 0110
+        // A = 8, B = 2, sel=001 → Subtraction
+
+        A = 4'b1100; B = 4'b1010; sel = 3'b010; #10;  // AND → Y = 1000
+        // Bitwise AND
+
+        A = 4'b1100; B = 4'b0011; sel = 3'b011; #10;  // OR → Y = 1111
+        // Bitwise OR
+
+        A = 4'b1010; sel = 3'b100; #10;               // NOT A → Y = 0101
+        // B not needed for NOT operation
+
+        // ---------------------------
+        // END SIMULATION
+        // ---------------------------
+        $finish;                // Stops the simulation
+
+    end
+
+endmodule

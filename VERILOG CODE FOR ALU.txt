@@ -1,0 +1,21 @@
+VERILOG CODE FOR ALU
+
+
+ module ALU(                  // Start of ALU module
+    input  [3:0] A, B,       // Declare 4-bit input A and B
+    input  [2:0] sel,        // Declare 3-bit select line
+    output reg [3:0] Y       // 4-bit output, declared as reg because it changes in always block
+);
+
+always @(*) begin            // Always block executes whenever any input changes
+    case(sel)                // Select operation based on sel value
+        3'b000: Y = A + B;   // sel = 000 → Perform Addition
+        3'b001: Y = A - B;   // sel = 001 → Perform Subtraction
+        3'b010: Y = A & B;   // sel = 010 → Bitwise AND between A and B
+        3'b011: Y = A | B;   // sel = 011 → Bitwise OR between A and B
+        3'b100: Y = ~A;      // sel = 100 → Bitwise NOT of A
+        default: Y = 4'b0000; // Default output if sel doesn’t match any case
+    endcase                  // End of case block
+end                          // End of always block
+
+endmodule                    // End of ALU module
